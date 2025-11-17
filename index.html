@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TWELVE-GIFT Christmas KIT - Dinámica Navideña</title>
+    <style>
+        /* ======================================= */
+        /* 1. Estilos Generales y Control de Slides */
+        /* ======================================= */
+        
+        html, body { 
+            height: 100%; 
+            overflow: hidden; /* Deshabilita el scroll principal */
+            margin: 0; padding: 0; 
+        }
+        
+        @keyframes colorShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); box-shadow: 0 0 10px rgba(227, 66, 52, 0.5); }
+            50% { transform: scale(1.01); box-shadow: 0 0 20px rgba(227, 66, 52, 0.8); }
+            100% { transform: scale(1); box-shadow: 0 0 10px rgba(227, 66, 52, 0.5); }
+        }
+
+        body { 
+            font-family: 'Roboto Slab', 'Palatino', serif; 
+            background: linear-gradient(-45deg, #103c10, #006400, #E34234, #D4AF37);
+            background-size: 400% 400%;
+            animation: colorShift 15s ease infinite;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative; /* Necesario para la nieve */
+        }
+        
+        .presentation-container { 
+            width: 100%; 
+            height: 100%;
+            position: relative;
+        }
+        
+        .slide { 
+            width: 90%; max-width: 1200px; height: 90vh; 
+            margin: 0 auto; 
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4); 
+            background-color: white; 
+            padding: 40px; 
+            box-sizing: border-box; 
+            display: none; 
+            flex-direction: column; 
+            justify-content: center; 
+            align-items: center; 
+            text-align: center; 
+            border-radius: 20px; 
+            position: absolute; 
+            top: 5vh;
+            left: 50%;
+            transform: translateX(-50%);
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+            overflow-y: auto; /* Permitir scroll interno si el contenido es grande */
+            z-index: 10; /* Asegura que las diapositivas estén sobre la nieve */
+        }
+
+        .slide.active {
+            display: flex;
+            opacity: 1;
+        }
+
+        /* 2. Patrones Visuales y Tipografía (Sin cambios importantes) */
+        .slide:nth-child(odd)::before {
+            content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+            background: radial-gradient(#E34234 10%, transparent 10%) 0 0, radial-gradient(#E34234 10%, transparent 10%) 30px 30px;
+            background-size: 60px 60px; opacity: 0.05; z-index: 0;
+        }
+        .slide:nth-child(even)::before {
+            content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+            background: repeating-linear-gradient(45deg, #006400, #006400 10px, #ffffff 10px, #ffffff 20px);
+            opacity: 0.03; z-index: 0;
+        }
+        .slide > * { position: relative; z-index: 1; } 
+        h1 { font-size: 4.5em; color: #E34234; text-shadow: 4px 4px 6px rgba(0, 0, 0, 0.2); margin-bottom: 0.5em; letter-spacing: 2px; }
+        h2 { font-size: 3em; color: #006400; margin-top: 0; border-bottom: 4px solid #D4AF37; padding-bottom: 10px; }
+        h3 { font-size: 2em; color: #E34234; padding: 5px 0; margin-bottom: 25px; font-style: italic; }
+        p, ul { font-size: 1.3em; line-height: 1.7; color: #333; }
+        strong { color: #E34234; font-weight: 700; }
+        ul { list-style: none; padding: 0; }
+        li { margin-bottom: 15px; text-align: left; padding-left: 2em; text-indent: -2em; }
+        li::before { display: inline-block; width: 2em; margin-left: -2em; font-size: 0.8em; content: ''; }
+        .bullets-gift li::before { content: '🎁'; }
+        .bullets-star li::before { content: '🌟'; }
+        .bullets-tree li::before { content: '🎄'; }
+        .bullets-ribbon li::before { content: '🎀'; }
+
+        /* Diseño de Categorías (Alineación Fija) */
+        .category-slide { flex-direction: row; text-align: left; align-items: flex-start; }
+        .category-info { flex: 3; padding-right: 40px; }
+        .category-visuals { flex: 2; display: flex; flex-direction: column; justify-content: center; align-items: center; background-color: #fcfcfc; padding: 20px; border-radius: 15px; border: 3px solid #D4AF37; }
+        .visual-box { 
+            background: linear-gradient(180deg, #fff 0%, #ffe0b2 100%);
+            border: 2px solid #D4AF37; 
+            padding: 20px; 
+            border-radius: 10px; 
+            margin-top: 20px; 
+            width: 100%; 
+            box-sizing: border-box; 
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        .visual-box p { font-size: 1.2em; color: #6d4c41; font-weight: bold; }
+        .visual-box .emoji-tip { font-size: 2.5em; display: inline-block; margin: 0 10px; transition: transform 0.5s ease-in-out, filter 0.5s; }
+        .visual-box .emoji-tip:hover { 
+            transform: rotate(10deg) scale(1.2); 
+            filter: drop-shadow(0 0 5px #D4AF37);
+        } 
+        .date-box { 
+            background: linear-gradient(90deg, #E34234, #d82e2e, #E34234); 
+            color: white; 
+            padding: 20px; 
+            border-radius: 15px; 
+            margin-top: 40px; 
+            font-weight: bold; 
+            font-size: 1.8em; 
+            width: 90%; 
+            box-shadow: 0 0 15px #E34234;
+            animation: pulse 1.5s ease-in-out infinite;
+        }
+
+        /* 3. Estilos de Botones de Navegación */
+        .nav-buttons {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 100;
+        }
+
+        .nav-button {
+            background-color: #006400; 
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            margin: 0 10px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1.1em;
+            font-weight: bold;
+            transition: background-color 0.3s, transform 0.1s;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+        }
+
+        .nav-button:hover {
+            background-color: #E34234; 
+            transform: scale(1.05);
+        }
+
+        .nav-button:disabled {
+            background-color: #666;
+            cursor: not-allowed;
+            opacity: 0.6;
+            transform: scale(1);
+        }
+
+        /* ======================================= */
+        /* 4. Estilos de Nieve y Acumulación */
+        /* ======================================= */
+
+        .snowflake {
+            position: absolute;
+            background: #FFFFFF;
+            border-radius: 50%;
+            pointer-events: none; /* Ignora clics */
+            animation: fall linear infinite;
+            opacity: 0; /* Empiezan invisibles */
+            z-index: 5; /* Detrás de las diapositivas */
+        }
+
+        @keyframes fall {
+            0% { transform: translateY(-10vh) translateX(0) rotate(0deg); opacity: 0; }
+            10% { opacity: 1; } /* Se hacen visibles */
+            90% { opacity: 1; }
+            100% { transform: translateY(100vh) translateX(var(--drift)) rotate(360deg); opacity: 0; } /* Caen y se desvanecen */
+        }
+
+        /* Capa para la nieve acumulada en el fondo */
+        .snow-pile {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 10vh; /* Altura de la acumulación */
+            background: linear-gradient(to top, #FFFFFF, rgba(255,255,255,0.7) 50%, rgba(255,255,255,0));
+            border-top-left-radius: 50% 20%; /* Efecto de montañita */
+            border-top-right-radius: 50% 20%;
+            z-index: 9; /* Encima de la nieve que cae, debajo de las diapositivas */
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body>
+
+<div class="presentation-container">
+
+    <section class="slide slide-title active" id="slide1">
+        <h1>TWELVE-GIFT</h1>
+        <h1>Christmas KIT</h1>
+        <p>¡Una dinámica de intercambio de regalos útil, sencilla y muy creativa!</p>
+        <div style="font-size: 10em;">🎁✨🎄</div>
+    </section>
+
+    <section class="slide" id="slide2">
+        <h2>¿Qué es el TWELVE-GIFT Christmas KIT?</h2>
+        <p>Es un intercambio navideño donde todos recibimos una "caja" llena de artículos esenciales para distintas áreas de nuestra vida.</p>
+        <ul style="max-width: 650px; margin: 30px auto;">
+            <li><strong>Participantes:</strong> Somos 12 personas.</li>
+            <li><strong>Categorías:</strong> Tenemos 12 categorías predefinidas.</li>
+            <li><strong>El Objetivo:</strong> A cada uno se le asignará <strong>una categoría</strong> y deberá comprar <strong>un regalo sencillo y útil</strong> que se ajuste a esa categoría, para cada uno de los 12 participantes (incluyéndose a sí mismo).</li>
+            <li><strong>El Resultado:</strong> Al final, cada persona recibirá 12 regalos pequeños y útiles, creando nuestro propio y variado "Christmas Kit".</li>
+        </ul>
+    </section>
+
+    <section class="slide" id="slide3">
+        <h2>Reglas Clave: Sencillo, Útil y Creativo</h2>
+        <ul style="max-width: 750px; margin: 30px auto;">
+            <li><strong>Enfoque Útil y Sencillo:</strong> Los regalos deben ser algo que la persona realmente pueda usar, no deben ser caros, sino <strong>inteligentes</strong>. Piensen en cosas pequeñas pero de gran valor práctico.</li>
+            <li><strong>Precio Libre:</strong> No hay costo máximo ni mínimo. La prioridad es la <strong>creatividad</strong> y la <strong>utilidad</strong>, no el valor monetario.</li>
+            <li><strong>Máxima Creatividad:</strong> El reto está en encontrar ese objeto sencillo que encaje perfecto en la categoría y sorprenda a los demás.</li>
+        </ul>
+        <div class="date-box">
+            📅 <strong>Día del Intercambio:</strong> 24 de Diciembre por la tarde. ¡A preparar los Kits!
+        </div>
+    </section>
+
+    <section class="slide category-slide" id="slide4">
+        <div class="category-info">
+            <h2>1. PIEL Y BIEN</h2>
+            <h3>Higiene y Cuidado Personal</h3>
+            <p>Regalos para el cuidado exterior, el autoconsentimiento y el bienestar personal. Piensen en un momento de spa o rutina diaria.</p>
+            <ul class="bullets-gift">
+                <li><strong>Una mascarilla facial</strong> o para cabello.</li>
+                <li><strong>Bálsamo labial de calidad</strong> o crema de manos.</li>
+                <li><strong>Jabón artesanal</strong> o sales de baño.</li>
+            </ul>
+        </div>
+        <div class="category-visuals">
+            <div class="visual-box">
+                <span class="emoji-tip">🧼</span>
+                <span class="emoji-tip">🧴</span>
+                <span class="emoji-tip">🧖‍♀️</span>
+                <p>Aromas, Texturas y Rutinas.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="slide category-slide" id="slide5">
+        <div class="category-info">
+            <h2>2. MENTE EN PAZ</h2>
+            <h3>Oasis (Relax-time)</h3>
+            <p>Objetos para desconectar, desestresar, meditar o simplemente hacer una pausa de la rutina.</p>
+            <ul class="bullets-star">
+                <li><strong>Infusor de té</strong> o una muestra de té especial.</li>
+                <li><strong>Velas aromáticas</strong> o incienso.</li>
+                <li><strong>Mini difusor de aceites esenciales.</strong></li>
+            </ul>
+        </div>
+        <div class="category-visuals">
+            <div class="visual-box">
+                <span class="emoji-tip">🧘‍♀️</span>
+                <span class="emoji-tip">🍵</span>
+                <span class="emoji-tip">💤</span>
+                <p>Calma, Desconexión y Tranquilidad.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="slide category-slide" id="slide6">
+        <div class="category-info">
+            <h2>3. EL SABOR SALADO</h2>
+            <h3>Antojitos Gourmet</h3>
+            <p>Alimento de preferencia salado. Algo más especial, artesanal o inusual para degustar.</p>
+            <ul class="bullets-tree">
+                <li><strong>Nueces o semillas</strong> con sabores especiales.</li>
+                <li><strong>Mini frasco de *tapenade*</strong> o especias exóticas.</li>
+                <li><strong>Un paquete pequeño de galletas saladas artesanales.</strong></li>
+            </ul>
+        </div>
+        <div class="category-visuals">
+            <div class="visual-box">
+                <span class="emoji-tip">🥨</span>
+                <span class="emoji-tip">🧀</span>
+                <span class="emoji-tip">🌶️</span>
+                <p>Snack Exquisito y Degustación.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="slide category-slide" id="slide7">
+        <div class="category-info">
+            <h2>4. ORDEN Y VISIÓN</h2>
+            <h3>Herramientas de Organización</h3>
+            <p>Cosas para simplificar el caos y poner todo en su sitio, ya sea en el escritorio, la mochila o el hogar.</p>
+            <ul class="bullets-ribbon">
+                <li><strong>Clips, sujetacables</strong> o mini organizadores de escritorio.</li>
+                <li><strong>Estuches pequeños</strong> o bolsas de tela para guardar cosas.</li>
+                <li><strong>Separadores de cajones</strong> o mini ganchos adhesivos.</li>
+            </ul>
+        </div>
+        <div class="category-visuals">
+            <div class="visual-box">
+                <span class="emoji-tip">🗃️</span>
+                <span class="emoji-tip">🖇️</span>
+                <span class="emoji-tip">📦</span>
+                <p>Estructura, Limpieza y Eficiencia.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="slide category-slide" id="slide8">
+        <div class="category-info">
+            <h2>5. MÉTODO Y META</h2>
+            <h3>Planeación y Productividad</h3>
+            <p>Artículos específicamente para trabajar/estudiar o ayudar a la concentración y el establecimiento de metas. Debe ser versátil.</p>
+            <ul class="bullets-gift">
+                <li><strong>Un set de *sticky notes*</strong> de colores diferentes.</li>
+                <li><strong>Un bolígrafo de alta calidad</strong> o multiusos.</li>
+                <li><strong>Un pequeño cuaderno de notas</strong> (*Bullet Journal*) o *checklist* semanal.</li>
+            </ul>
+        </div>
+        <div class="category-visuals">
+            <div class="visual-box">
+                <span class="emoji-tip">📝</span>
+                <span class="emoji-tip">🗓️</span>
+                <span class="emoji-tip">📈</span>
+                <p>Foco, Trabajo y Planificación.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="slide category-slide" id="slide9">
+        <div class="category-info">
+            <h2>6. EL ARTE DE CREAR</h2>
+            <h3>Liberando la Imaginación</h3>
+            <p>Objetos que inviten a liberar la imaginación: dibujar, escribir, colorear o construir algo nuevo.</p>
+            <ul class="bullets-star">
+                <li><strong>Un set pequeño de crayones, acuarelas</strong> o *markers*.</li>
+                <li><strong>Un libro de colorear para adultos</strong> o un *sketchbook* de bolsillo.</li>
+                <li><strong>Plastilina especial</strong> o un set de *stamps*.</li>
+            </ul>
+        </div>
+        <div class="category-visuals">
+            <div class="visual-box">
+                <span class="emoji-tip">🖍️</span>
+                <span class="emoji-tip">🎨</span>
+                <span class="emoji-tip">✏️</span>
+                <p>Expresión, Color y Diseño.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="slide category-slide" id="slide10">
+        <div class="category-info">
+            <h2>7. LUZ ESPIRITUAL</h2>
+            <h3>Regalo de Adviento</h3>
+            <p>Un detalle que alimente el alma, invite a la reflexión, la fe o la conexión espiritual, sin ser demasiado literal.</p>
+            <ul class="bullets-tree">
+                <li><strong>Un pequeño libro de meditaciones diarias.</strong></li>
+                <li><strong>Una estampita</strong> o una pulsera con un mensaje de fe.</li>
+                <li><strong>Un mini pesebre</strong> o adorno sutil.</li>
+            </ul>
+        </div>
+        <div class="category-visuals">
+            <div class="visual-box">
+                <span class="emoji-tip">🕊️</span>
+                <span class="emoji-tip">🕯️</span>
+                <span class="emoji-tip">🙏</span>
+                <p>Reflexión, Alma y Fe.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="slide category-slide" id="slide11">
+        <div class="category-info">
+            <h2>8. FIESTA Y TEMPORADA</h2>
+            <h3>Temática Navideña</h3>
+            <p>Cualquier cosa que grite ¡Feliz Navidad! y que no esté relacionada con el adviento, sino con la celebración, la alegría y el color.</p>
+            <ul class="bullets-ribbon">
+                <li><strong>Un adorno divertido</strong> para el árbol.</li>
+                <li><strong>Calcetines navideños</strong> o un gorro temático.</li>
+                <li><strong>Luces pequeñas</strong> o un adorno para la casa.</li>
+            </ul>
+        </div>
+        <div class="category-visuals">
+            <div class="visual-box">
+                <span class="emoji-tip">🎅🏼</span>
+                <span class="emoji-tip">🔔</span>
+                <span class="emoji-tip">🌟</span>
+                <p>Alegría, Decoración y Celebración.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="slide category-slide" id="slide12">
+        <div class="category-info">
+            <h2>9. TÚ, SIN MÁS</h2>
+            <h3>Un Regalo Personalizado</h3>
+            <p>Un regalo que represente un *hobby*, una profesión o una característica muy específica de la persona que lo recibirá.</p>
+            <ul class="bullets-gift">
+                <li><strong>Un lápiz especial</strong> para el que dibuja.</li>
+                <li><strong>Un marcador de libro temático</strong> para el lector.</li>
+                <li><strong>Un destapador con estilo</strong> para el anfitrión.</li>
+            </ul>
+        </div>
+        <div class="category-visuals">
+            <div class="visual-box">
+                <span class="emoji-tip">👤</span>
+                <span class="emoji-tip">🎯</span>
+                <span class="emoji-tip">💖</span>
+                <p>Personalidad, Gustos y Esencia.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="slide category-slide" id="slide13">
+        <div class="category-info">
+            <h2>10. RAÍZ Y TIERRA</h2>
+            <h3>Guatemala y sus Sabores</h3>
+            <p>Algo que sea propio del país: comida típica, un textil, una artesanía, o algo que represente nuestra cultura.</p>
+            <ul class="bullets-star">
+                <li><strong>Un paquete pequeño de café gourmet guatemalteco.</strong></li>
+                <li><strong>Un pequeño llavero o pieza artesanal.</strong></li>
+                <li><strong>Dulce típico</strong> (colochos de guayaba, canillitas de leche, etc.).</li>
+            </ul>
+        </div>
+        <div class="category-visuals">
+            <div class="visual-box">
+                <span class="emoji-tip">🌋</span>
+                <span class="emoji-tip">☕️</span>
+                <span class="emoji-tip">🧵</span>
+                <p>Cultura, Origen y Tradición.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="slide category-slide" id="slide14">
+        <div class="category-info">
+            <h2>11. EL DULCE PLACER</h2>
+            <h3>Manjar para el Paladar</h3>
+            <p>Comida dulce. El gusto exquisito de un chocolate, un caramelo o algo azucarado que sea un gusto culposo.</p>
+            <ul class="bullets-tree">
+                <li><strong>Una barra de chocolate *premium*</strong> o artesanal.</li>
+                <li><strong>Mini frasco de miel</strong> o mermelada especial.</li>
+                <li><strong>Un set de mini malvaviscos</strong> o *gummies*.</li>
+            </ul>
+        </div>
+        <div class="category-visuals">
+            <div class="visual-box">
+                <span class="emoji-tip">🍫</span>
+                <span class="emoji-tip">🍬</span>
+                <span class="emoji-tip">🍯</span>
+                <p>Golosina, Néctar y Satisfacción.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="slide category-slide" id="slide15">
+        <div class="category-info">
+            <h2>12. SIEMPRE LISTO</h2>
+            <h3>Kit de Emergencia S.O.S.</h3>
+            <p>Cositas chiquitas que ayuden en cualquier contexto. El comodín de bolsillo para cualquier imprevisto.</p>
+            <ul class="bullets-ribbon">
+                <li><strong>Set de curitas</strong> o pastillas de vitamina C.</li>
+                <li><strong>Mini set de costura</strong> o desarmadores.</li>
+                <li><strong>Un pequeño *power bank*</strong> o linterna de bolsillo.</li>
+            </ul>
+        </div>
+        <div class="category-visuals">
+            <div class="visual-box">
+                <span class="emoji-tip">🩹</span>
+                <span class="emoji-tip">🛠️</span>
+                <span class="emoji-tip">🔋</span>
+                <p>Comodín, Imprevisto y Solución.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="slide" id="slide16">
+        <h2>¡A Preparar tu TWELVE-GIFT Christmas KIT!</h2>
+        <p>Recuerda: la magia está en la <strong>utilidad</strong> y la <strong>creatividad</strong> de cada uno de los 12 regalos.</p>
+        <div style="font-size: 2em; color: #E34234; margin-top: 20px;">
+            ¡Nos vemos el <strong>24 de Diciembre</strong>!
+        </div>
+        <div style="font-size: 6em; margin-top: 20px;">🌟🎁🎄</div>
+    </section>
+
+    <div class="nav-buttons">
+        <button id="prevBtn" class="nav-button">← Anterior</button>
+        <button id="nextBtn" class="nav-button">Siguiente →</button>
+    </div>
+
+    <div id="snow-container"></div>
+</div>
+
+<script>
+    const slides = document.querySelectorAll('.slide');
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    const snowContainer = document.getElementById('snow-container');
+    let currentSlide = 0;
+    const numSnowflakes = 50; // Cantidad de copos de nieve
+    const snowflakeSpeedMin = 8;
+    const snowflakeSpeedMax = 20;
+    const snowflakeSizeMin = 5;
+    const snowflakeSizeMax = 15;
+    const snowflakeDriftMax = 200; // Desplazamiento lateral máximo
+
+    // Función para mostrar la diapositiva actual
+    function showSlide(index) {
+        if (index < 0) {
+            index = 0;
+        } else if (index >= slides.length) {
+            index = slides.length - 1;
+        }
+        
+        slides[currentSlide].classList.remove('active');
+        currentSlide = index;
+        slides[currentSlide].classList.add('active');
+
+        prevBtn.disabled = (currentSlide === 0);
+        nextBtn.disabled = (currentSlide === slides.length - 1);
+    }
+
+    // Navegación por botones
+    nextBtn.addEventListener('click', () => {
+        showSlide(currentSlide + 1);
+    });
+
+    prevBtn.addEventListener('click', () => {
+        showSlide(currentSlide - 1);
+    });
+
+    // Inicialización de la presentación
+    showSlide(currentSlide); 
+
+    // Generación y animación de copos de nieve
+    function createSnowflake() {
+        const snowflake = document.createElement('div');
+        snowflake.classList.add('snowflake');
+        snowContainer.appendChild(snowflake);
+
+        const size = Math.random() * (snowflakeSizeMax - snowflakeSizeMin) + snowflakeSizeMin;
+        snowflake.style.width = `${size}px`;
+        snowflake.style.height = `${size}px`;
+        snowflake.style.left = `${Math.random() * 100}vw`; // Posición horizontal aleatoria
+        
+        const animationDuration = Math.random() * (snowflakeSpeedMax - snowflakeSpeedMin) + snowflakeSpeedMin;
+        snowflake.style.animationDuration = `${animationDuration}s`;
+        
+        // Simular arrastre lateral por el viento
+        const driftAmount = (Math.random() - 0.5) * 2 * snowflakeDriftMax; // Entre -driftMax y +driftMax
+        snowflake.style.setProperty('--drift', `${driftAmount}px`);
+
+        // Eliminar copo después de caer para liberar memoria
+        snowflake.addEventListener('animationend', () => {
+            snowflake.remove();
+            createSnowflake(); // Crea un nuevo copo cuando uno termina de caer
+        });
+    }
+
+    // Crear los copos iniciales
+    for (let i = 0; i < numSnowflakes; i++) {
+        createSnowflake();
+    }
+</script>
+
+</body>
+</html>
