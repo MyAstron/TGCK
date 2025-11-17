@@ -239,3 +239,72 @@
     from, to { opacity: 1; }
     50% { opacity: 0.5; }
 }
+/* ======================================= */
+/*  RESPONSIVE: TELÉFONOS Y TABLETS        */
+/* ======================================= */
+
+@media (max-width: 900px) {
+
+    .slide {
+        width: 95%;
+        height: auto;        /* Permite que crezca según contenido */
+        top: 2vh;
+        padding: 20px;
+    }
+
+    h1 { font-size: 2.8em; }
+    h2 { font-size: 2.2em; }
+    h3 { font-size: 1.6em; }
+    p, ul { font-size: 1.1em; }
+
+    /* Las categorías dejan de estar lado a lado */
+    .category-slide {
+        flex-direction: column;
+        text-align: center;
+        align-items: center;
+    }
+
+    .category-info {
+        padding: 0 !important;
+    }
+
+    .category-visuals {
+        width: 100%;
+        margin-top: 25px;
+        padding: 15px;
+    }
+
+    .visual-box p {
+        font-size: 1.1em;
+    }
+
+    /* Caja de fecha */
+    .date-box {
+        font-size: 1.3em;
+        padding: 15px;
+        width: 100%;
+    }
+
+    /* Botones de navegación */
+    .nav-buttons {
+        bottom: 10px;
+    }
+
+    .nav-button {
+        padding: 10px 20px;
+        font-size: 1em;
+    }
+}
+
+/* Extra pequeño (teléfonos muy pequeños) */
+@media (max-width: 500px) {
+    h1 { font-size: 2.2em; }
+    h2 { font-size: 1.8em; }
+    h3 { font-size: 1.3em; }
+
+    .visual-box .emoji-tip {
+        font-size: 2em;
+    }
+
+    p, ul { font-size: 1em; }
+}
