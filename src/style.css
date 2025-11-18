@@ -83,12 +83,12 @@
         .slide > * { position: relative; z-index: 1; } 
         h1 { font-size: 4.5em; color: #E34234; text-shadow: 4px 4px 6px rgba(0, 0, 0, 0.2); margin-bottom: 0.5em; letter-spacing: 2px; }
         h2 { font-size: 3em; color: #006400; margin-top: 0; border-bottom: 4px solid #D4AF37; padding-bottom: 10px; }
-        h3 { font-size: 2em; color: #E34234; padding: 5px 0; margin-bottom: 25px; font-style: italic; }
+        h3 { font-size: 2em; color: #346be3; padding: 5px 0; margin-bottom: 25px; font-style: italic; }
         p, ul { font-size: 1.3em; line-height: 1.7; color: #333; }
-        strong { color: #E34234; font-weight: 700; }
+        strong { color: #346be3; font-weight: 700; }
         ul { list-style: none; padding: 0; }
         li { margin-bottom: 15px; text-align: left; padding-left: 2em; text-indent: -2em; }
-        li::before { display: inline-block; width: -2em; margin-left: -2em; font-size: 0.8em; content: ''; padding-left: 100px;}
+        li::before { display: inline-block; width: -2em; margin-left: -2em; font-size: 0.8em; content: ''; padding-left: 70px;}
         .bullets-gift li::before { content: '🎁'; }
         .bullets-star li::before { content: '🌟'; }
         .bullets-tree li::before { content: '🎄'; }
